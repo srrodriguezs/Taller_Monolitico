@@ -6,14 +6,18 @@ use app\models\config\Model;
 
 class RetroItems extends Model {
     protected $id;
-    protected $name;
-    protected $start_date;
-    protected $end_date;
+    protected $sprint_id;
+    protected $categoria;
+    protected $descripcion;
+    protected $cumplida;
+    protected $fecha_revision;
 
-    public function __construct($id = null, $name = null, $start_date = null, $end_date = null) {
+    public function __construct($id = null, $sprint_id = null, $categoria = null, $descripcion = null, $cumplida = null, $fecha_revision = null) {
         $this->id = $id;
-        $this->name = $name;
-        $this->start_date = $start_date;
-        $this->end_date = $end_date;
+        $this->sprint_id = $sprint_id;
+        $this->categoria = $categoria;
+        $this->descripcion = $descripcion;
+        $this->cumplida = $cumplida;
+        $this->fecha_revision = $fecha_revision;
     }
 }
