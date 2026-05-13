@@ -16,9 +16,9 @@ class SprintsInsert {
         $sql = "INSERT INTO sprints (nombre, fecha_inici, fecha_fin) 
         VALUES (:nombre, :fecha_inici, :fecha_fin)";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bindValue(':nombre', $sprint->get('nombre'));
-        $stmt->bindValue(':fecha_inici', $sprint->get('fecha_inici'));
-        $stmt->bindValue(':fecha_fin', $sprint->get('fecha_fin'));
+        $stmt->bind_param(':nombre', $sprint->get('nombre'));
+        $stmt->bind_param(':fecha_inici', $sprint->get('fecha_inici'));
+        $stmt->bind_paramg(':fecha_fin', $sprint->get('fecha_fin'));
         return $stmt->execute();
     }
 }

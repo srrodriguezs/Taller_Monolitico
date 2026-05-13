@@ -8,7 +8,7 @@ class Conexion {
     private $db_name = "db_ventas";
     private $username = "root";
     private $password = "";
-    private $conx_db = null;
+    public $conx_db = null;
 
     public function __construct() {
         $this->conx_db = new mysqli($this->host, $this->username, $this->password, $this->db_name);
