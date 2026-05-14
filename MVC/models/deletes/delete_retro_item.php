@@ -16,6 +16,7 @@ class RetroItemsDelete {
         $sql = "DELETE FROM retro_items WHERE id = ?";
         $stmt = $this->conexion->conx_db->prepare($sql);
         $stmt->bind_param("i", $id);
+        $this->conexion->Close();
         return $stmt->execute();
     }
 }

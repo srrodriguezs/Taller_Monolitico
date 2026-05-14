@@ -13,9 +13,9 @@ class SprintsUpdate {
     }
 
     public function update(Sprints $sprint) {
-        $sql = "UPDATE sprints SET nombre = ?, fecha_inici = ?, fecha_fin = ? WHERE id = ?";
+        $sql = "UPDATE sprints SET nombre = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bind_param("sss", $sprint->get('nombre'), $sprint->get('fecha_inici'), $sprint->get('fecha_fin'), $sprint->get('id'));
+        $stmt->bind_param("sss", $sprint->get('nombre'), $sprint->get('fecha_inicio'), $sprint->get('fecha_fin'), $sprint->get('id'));
         return $stmt->execute();
     }
 }

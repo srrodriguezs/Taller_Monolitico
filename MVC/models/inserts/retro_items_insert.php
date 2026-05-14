@@ -37,6 +37,7 @@ use app\models\entities\RetroItems;
             $stmt->bindValue(':cumplida', null);
         }
         $stmt->bindValue(':fecha_revision', $retroItem->get('fecha_revision'));
+        $this->conexion->Close();
         return $stmt->execute();
     }
 }
