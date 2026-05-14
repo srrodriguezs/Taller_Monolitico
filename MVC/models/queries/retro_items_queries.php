@@ -27,7 +27,7 @@ class RetroItemsQueries {
     public function getRetroItemsPorSprint(int $sprint_id) {
         $sql = "SELECT * FROM retro_items WHERE sprint_id = :sprint_id";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bindValue(':sprint_id', $sprint_id);
+        $stmt->bind_param(':sprint_id', $sprint_id);
         $stmt->execute();
         $lista = [];
         while($row = $stmt->get_result()->fetch_assoc()){
@@ -40,8 +40,8 @@ class RetroItemsQueries {
     public function getSprintPorCategoria(int $sprint_id, string $categoria) {
         $sql = "SELECT * FROM retro_items WHERE sprint_id = :sprint_id AND categoria = :categoria";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bindValue(':sprint_id', $sprint_id);
-        $stmt->bindValue(':categoria', $categoria);
+        $stmt->bind_param(':sprint_id', $sprint_id);
+        $stmt->bind_param(':categoria', $categoria);
         $stmt->execute();
         $lista = [];
         while($row = $stmt->get_result()->fetch_assoc()){

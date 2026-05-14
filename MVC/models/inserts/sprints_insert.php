@@ -14,11 +14,12 @@ class SprintsInsert {
 
     public function insert(Sprints $sprint) {
         $sql = "INSERT INTO sprints (nombre, fecha_inici, fecha_fin) 
-        VALUES (:nombre, :fecha_inici, :fecha_fin)";
+        VALUES (?, ?, ?)";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bind_param(':nombre', $sprint->get('nombre'));
-        $stmt->bind_param(':fecha_inici', $sprint->get('fecha_inici'));
-        $stmt->bind_paramg(':fecha_fin', $sprint->get('fecha_fin'));
+        $nombre = $sprint->get('nombre');
+        $fecha_inici = $sprint->get('fecha_inici');
+        $fecha_fin = $sprint->get('fecha_fin');
+        $stmt->bind_param('sss', $nombre, $fecha_inici, $fecha_fin);
         return $stmt->execute();
     }
 }

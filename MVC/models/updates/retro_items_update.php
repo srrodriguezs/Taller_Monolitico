@@ -15,7 +15,14 @@ class RetroItemsUpdate {
     public function update(RetroItems $retroItem) {
         $sql = "UPDATE retro_items SET sprint_id = ?, categoria = ?, descripcion = ?, cumplida = ?, fecha_revision = ? WHERE id = ?";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bind_param("sss", $retroItem->get('sprint_id'), $retroItem->get('categoria'), $retroItem->get('descripcion'), $retroItem->get('cumplida'), $retroItem->get('fecha_revision'), $retroItem->get('id'));
+        $sprintId = $retroItem->get('sprint_id');
+        $categoria = $retroItem->get('categoria');
+        $descripcion = $retroItem->get('descripcion');
+        $cumplida = $retroItem->get('cumplida');
+        $fechaRevision = $retroItem->get('fecha_revision');
+        $id = $retroItem->get('id');
+
+        $stmt->bind_param("issssi", $sprintId, $categoria, $descripcion, $cumplida, $fechaRevision, $id);
         return $stmt->execute();
     }
 }
