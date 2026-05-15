@@ -8,14 +8,12 @@ use app\models\entities\Sprints;
 class SprintsUpdate {
     private $conexion;
 
-    public function __construct() {
-        $this->conexion = new Conexion();
-    }
-
-    public function update(Sprints $sprint) {
-        $sql = "UPDATE sprints SET nombre = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?";
-        $stmt = $this->conexion->conx_db->prepare($sql);
-        $stmt->bind_param("sss", $sprint->get('nombre'), $sprint->get('fecha_inicio'), $sprint->get('fecha_fin'), $sprint->get('id'));
-        return $stmt->execute();
+    static function update(Sprints $sprint) {
+        $sql = "UPDATE sprints 
+        SET nombre = '" . $sprint->get('nombre') . "', fecha_inicio = '" . $sprint->get('fecha_inicio') . "', fecha_fin = '" . $sprint->get('fecha_fin') . "' WHERE id = " . $sprint->get('id');
+        $conexion = new Conexion();
+        $result = $conexion->Execute($sql);
+        $conexion->Close();
+        return $result;
     }
 }
