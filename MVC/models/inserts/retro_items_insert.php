@@ -28,13 +28,16 @@ use app\models\entities\RetroItems;
         $sql = "INSERT INTO retro_items (sprint_id, categoria, descripcion, cumplida, fecha_revision) 
         VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conexion->conx_db->prepare($sql);
-
-        $sprint_id = $retroItem->get('sprint_id');
-        $descripcion = $retroItem->get('descripcion');
-        $cumplida = $categoria === 'accion' ? $retroItem->get('cumplida') : null;
-        $fecha_revision = $retroItem->get('fecha_revision');
-
-        $stmt->bind_param('issis', $sprint_id, $categoria, $descripcion, $cumplida, $fecha_revision);
+        $stmt->bindValue(':sprint_id', $retroItem->get('sprint_id'));
+        $stmt->bindValue(':categoria', $categoria);
+        $stmt->bindValue(':descripcion', $retroItem->get('descripcion'));
+        if ($categoria === 'accion') {
+            $stmt->bindValue(':cumplida', $retroItem->get('cumplida'));
+        } else {
+            $stmt->bindValue(':cumplida', null);
+        }
+        $stmt->bindValue(':fecha_revision', $retroItem->get('fecha_revision'));
+        $this->conexion->Close();
         return $stmt->execute();
     }
 }

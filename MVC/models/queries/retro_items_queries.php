@@ -21,6 +21,7 @@ class RetroItemsQueries {
             $retroItem = new RetroItems($row['id'], $row['nombre'], $row['email']);
             array_push($lista, $retroItem);
         }
+        $this->conexion->Close();
         return $lista;
     }
 
@@ -34,6 +35,7 @@ class RetroItemsQueries {
             $retroItem = new RetroItems($row['id'], $row['sprint_id'], $row['categoria'], $row['descripcion'], $row['cumplida'], $row['fecha_revision']);
             array_push($lista, $retroItem);
         }
+        $this->conexion->Close();
         return $lista;
     }
 
@@ -48,6 +50,7 @@ class RetroItemsQueries {
             $retroItem = new RetroItems($row['id'], $row['sprint_id'], $row['categoria'], $row['descripcion'], $row['cumplida'], $row['fecha_revision']);
             array_push($lista, $retroItem);
         }
+        $this->conexion->Close();
         return $lista;
     }
 }

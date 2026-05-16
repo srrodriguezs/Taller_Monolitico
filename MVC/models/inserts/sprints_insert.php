@@ -13,13 +13,13 @@ class SprintsInsert {
     }
 
     public function insert(Sprints $sprint) {
-        $sql = "INSERT INTO sprints (nombre, fecha_inici, fecha_fin) 
-        VALUES (?, ?, ?)";
+        $sql = "INSERT INTO sprints (nombre, fecha_inicio, fecha_fin) 
+        VALUES (:nombre, :fecha_inicio, :fecha_fin)";
         $stmt = $this->conexion->conx_db->prepare($sql);
-        $nombre = $sprint->get('nombre');
-        $fecha_inici = $sprint->get('fecha_inici');
-        $fecha_fin = $sprint->get('fecha_fin');
-        $stmt->bind_param('sss', $nombre, $fecha_inici, $fecha_fin);
+        $stmt->bindValue(':nombre', $sprint->get('nombre'));
+        $stmt->bindValue(':fecha_inicio', $sprint->get('fecha_inicio'));
+        $stmt->bindValue(':fecha_fin', $sprint->get('fecha_fin'));
+        $this->conexion->Close();
         return $stmt->execute();
     }
 }

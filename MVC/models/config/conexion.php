@@ -5,7 +5,7 @@ use mysqli;
 
 class Conexion {
     private $host = "localhost";
-    private $db_name = "db_ventas";
+    private $db_name = "registro_retro_db";
     private $username = "root";
     private $password = "";
     public $conx_db = null;
