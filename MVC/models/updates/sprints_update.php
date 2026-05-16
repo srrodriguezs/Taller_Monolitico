@@ -6,17 +6,18 @@ use app\models\config\Conexion;
 use app\models\entities\Sprints;
 
 class SprintsUpdate {
-    private $conexion;
-
     static function update(Sprints $sprint) {
-        $sql = "UPDATE sprints 
-        SET nombre = '" . $sprint->get('nombre') . 
-        "', fecha_inicio = '" . $sprint->get('fecha_inicio') . 
-        "', fecha_fin = '" . $sprint->get('fecha_fin') . 
-        "' WHERE id = " . $sprint->get('id');
+        $sql = "UPDATE sprints SET nombre = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?";
         $conexion = new Conexion();
-        $result = $conexion->Execute($sql);
+        $result = $conexion->Execute($sql, [
+            $sprint->get('nombre'),
+            $sprint->get('fecha_inicio'),
+            $sprint->get('fecha_fin'),
+            $sprint->get('id')
+        ]);
+        $success = $result !== false;
+        $error = $success ? '' : $conexion->getLastError();
         $conexion->Close();
-        return $result;
+        return ['success' => $success, 'error' => $error];
     }
 }

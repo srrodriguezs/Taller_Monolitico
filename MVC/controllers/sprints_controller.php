@@ -9,24 +9,53 @@ use app\models\updates\SprintsUpdate;
 use app\models\deletes\SprintsDelete;
 
 class SprintsController {
-    function getSprints() {
-        return SprintsQueries::getSprints();
+    function getSprints(string $search = null, int $page = 1, int $perPage = 5) {
+        return SprintsQueries::getSprints($search, $page, $perPage);
+    }
+
+    function countSprints(string $search = null) {
+        return SprintsQueries::countSprints($search);
     }
 
     function createSprint(array $data) {
-        $sprint = new Sprints(null, $data['nombre'] ?? null, $data['fecha_inicio'] ?? null, $data['fecha_fin'] ?? null);
+        $nombre = trim($data['nombre'] ?? '');
+        $fechaInicio = $data['fecha_inicio'] ?? null;
+        $fechaFin = $data['fecha_fin'] ?? null;
+
+        if ($nombre === '' || !$fechaInicio || !$fechaFin) {
+            return ['success' => false, 'error' => 'Todos los campos son obligatorios.'];
+        }
+
+        $sprint = new Sprints(null, $nombre, $fechaInicio, $fechaFin);
         $insert = new SprintsInsert();
         return $insert->insert($sprint);
     }
 
     function updateSprint(array $data) {
-        $sprint = new Sprints($data['id'] ?? null, $data['nombre'] ?? null, $data['fecha_inicio'] ?? null, $data['fecha_fin'] ?? null);
+        $id = $data['id'] ?? null;
+        $nombre = trim($data['nombre'] ?? '');
+        $fechaInicio = $data['fecha_inicio'] ?? null;
+        $fechaFin = $data['fecha_fin'] ?? null;
+
+        if (!$id || !is_numeric($id)) {
+            return ['success' => false, 'error' => 'ID de sprint inválido.'];
+        }
+        if ($nombre === '' || !$fechaInicio || !$fechaFin) {
+            return ['success' => false, 'error' => 'Todos los campos son obligatorios.'];
+        }
+
+        $sprint = new Sprints($id, $nombre, $fechaInicio, $fechaFin);
         $update = new SprintsUpdate();
         return $update->update($sprint);
     }
 
     function deleteSprint(array $data) {
+        $id = $data['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
+            return ['success' => false, 'error' => 'ID de sprint inválido.'];
+        }
+
         $delete = new SprintsDelete();
-        return $delete->delete($data['id'] ?? null);
+        return $delete->delete($id);
     }
 }
