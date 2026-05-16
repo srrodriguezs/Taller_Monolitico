@@ -2,56 +2,53 @@
 
 namespace app\controllers;
 
+use app\models\entities\RetroItems;
 use app\models\queries\RetroItemsQueries;
 use app\models\inserts\RetroItemsInsert;
 use app\models\updates\RetroItemsUpdate;
 use app\models\deletes\RetroItemsDelete;
 
 class RetroItemsController {
-    // Consultas
     function getRetroItems() {
-        $retroItems = RetroItemsQueries::getRetroItems();
-        return $retroItems;
+        return RetroItemsQueries::getRetroItems();
     }
 
     function getRetroItemsPorSprint($sprintId) {
-        $retroItems = RetroItemsQueries::getRetroItemsPorSprint($sprintId);
-        return $retroItems;
+        return RetroItemsQueries::getRetroItemsPorSprint($sprintId);
     }
 
     function getRetroItemsPorCategoria($categoria) {
-        $retroItems = RetroItemsQueries::getRetroItemsPorCategoria($categoria);
-        return $retroItems;
+        return RetroItemsQueries::getRetroItemsPorCategoria($categoria);
     }
 
-    //Inserciones
-    function insertLogro() {
-        $retroItem = RetroItemsInsert::insertLogro($_POST);
-        return $retroItem;
+    function createRetroItem(array $data) {
+        $retroItem = new RetroItems(
+            null,
+            $data['sprint_id'] ?? null,
+            $data['categoria'] ?? null,
+            $data['descripcion'] ?? null,
+            isset($data['cumplida']) ? ($data['cumplida'] ? 1 : 0) : 0,
+            $data['fecha_revision'] ?? null
+        );
+        $insert = new RetroItemsInsert();
+        return $insert->insert($retroItem);
     }
 
-    function insertImpedimento() {
-        $retroItem = RetroItemsInsert::insertImpedimento($_POST);
-        return $retroItem;
+    function updateRetroItem(array $data) {
+        $retroItem = new RetroItems(
+            $data['id'] ?? null,
+            $data['sprint_id'] ?? null,
+            $data['categoria'] ?? null,
+            $data['descripcion'] ?? null,
+            isset($data['cumplida']) ? ($data['cumplida'] ? 1 : 0) : 0,
+            $data['fecha_revision'] ?? null
+        );
+        $update = new RetroItemsUpdate();
+        return $update->update($retroItem);
     }
 
-    function insertAccion() {
-        $retroItem = RetroItemsInsert::insertAccion($_POST);
-        return $retroItem;
-    }
-
-    function createRetroItem() {
-        $retroItem = RetroItemsInsert::insert($_POST);
-        return $retroItem;
-    }
-
-    function updateRetroItem() {
-        $retroItem = RetroItemsUpdate::update($_POST);
-        return $retroItem;
-    }
-
-    function deleteRetroItem() {
-        $retroItem = RetroItemsDelete::delete($_POST);
-        return $retroItem;
+    function deleteRetroItem(array $data) {
+        $delete = new RetroItemsDelete();
+        return $delete->delete($data['id'] ?? null);
     }
 }

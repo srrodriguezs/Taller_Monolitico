@@ -57,19 +57,9 @@ if (isset($_GET['edit_id'])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD de Sprints</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; max-width: 900px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #f2f2f2; }
-        form { margin-bottom: 20px; }
-        .message { margin-bottom: 16px; padding: 10px; border: 1px solid #4caf50; background: #e8f5e9; color: #2e7d32; max-width: 900px; }
-        .error { border-color: #f44336; background: #ffebee; color: #c62828; }
-        .actions { display: flex; gap: 8px; }
-    </style>
+    <link rel="stylesheet" href="CSS/sprints_crud.css">
 </head>
 <body>
     <h1>CRUD de Sprints</h1>

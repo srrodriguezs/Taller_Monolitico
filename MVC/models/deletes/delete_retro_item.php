@@ -13,12 +13,9 @@ class RetroItemsDelete {
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM retro_items WHERE id = ?";
+        $sql = "DELETE FROM retro_items WHERE id = $id";
         $conexion = new Conexion();
-        $stmt = $conexion->conx_db->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
+        $result = $conexion->Execute($sql);
         $conexion->Close();
     }
 }
