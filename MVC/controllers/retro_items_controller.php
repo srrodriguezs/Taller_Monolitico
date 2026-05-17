@@ -2,56 +2,92 @@
 
 namespace app\controllers;
 
+use app\models\entities\RetroItems;
 use app\models\queries\RetroItemsQueries;
 use app\models\inserts\RetroItemsInsert;
 use app\models\updates\RetroItemsUpdate;
 use app\models\deletes\RetroItemsDelete;
 
 class RetroItemsController {
-    // Consultas
-    function getRetroItems() {
-        $retroItems = RetroItemsQueries::getRetroItems();
-        return $retroItems;
+    function getRetroItems(string $search = null, int $page = 1, int $perPage = 5) {
+        return RetroItemsQueries::getRetroItems($search, $page, $perPage);
+    }
+
+    function countRetroItems(string $search = null) {
+        return RetroItemsQueries::countRetroItems($search);
     }
 
     function getRetroItemsPorSprint($sprintId) {
-        $retroItems = RetroItemsQueries::getRetroItemsPorSprint($sprintId);
-        return $retroItems;
+        return RetroItemsQueries::getRetroItemsPorSprint($sprintId);
     }
 
     function getRetroItemsPorCategoria($categoria) {
-        $retroItems = RetroItemsQueries::getRetroItemsPorCategoria($categoria);
-        return $retroItems;
+        return RetroItemsQueries::getRetroItemsPorCategoria($categoria);
     }
 
-    //Inserciones
-    function insertLogro() {
-        $retroItem = RetroItemsInsert::insertLogro($_POST);
-        return $retroItem;
+    function createRetroItem(array $data) {
+        $sprintId = $data['sprint_id'] ?? null;
+        $categoria = trim($data['categoria'] ?? '');
+        $descripcion = trim($data['descripcion'] ?? '');
+        $cumplida = isset($data['cumplida']) ? 1 : 0;
+        $fechaRevision = $data['fecha_revision'] ?? null;
+
+        if (!$sprintId || !is_numeric($sprintId)) {
+            return ['success' => false, 'error' => 'El sprint ID es inválido o está vacío.'];
+        }
+        if ($categoria === '' || $descripcion === '') {
+            return ['success' => false, 'error' => 'La categoría y la descripción son obligatorias.'];
+        }
+
+        $retroItem = new RetroItems(
+            null,
+            $sprintId,
+            $categoria,
+            $descripcion,
+            $cumplida,
+            $fechaRevision
+        );
+        $insert = new RetroItemsInsert();
+        return $insert->insert($retroItem);
     }
 
-    function insertImpedimento() {
-        $retroItem = RetroItemsInsert::insertImpedimento($_POST);
-        return $retroItem;
+    function updateRetroItem(array $data) {
+        $id = $data['id'] ?? null;
+        $sprintId = $data['sprint_id'] ?? null;
+        $categoria = trim($data['categoria'] ?? '');
+        $descripcion = trim($data['descripcion'] ?? '');
+        $cumplida = isset($data['cumplida']) ? 1 : 0;
+        $fechaRevision = $data['fecha_revision'] ?? null;
+
+        if (!$id || !is_numeric($id)) {
+            return ['success' => false, 'error' => 'ID de retro item inválido.'];
+        }
+        if (!$sprintId || !is_numeric($sprintId)) {
+            return ['success' => false, 'error' => 'El sprint ID es inválido o está vacío.'];
+        }
+        if ($categoria === '' || $descripcion === '') {
+            return ['success' => false, 'error' => 'La categoría y la descripción son obligatorias.'];
+        }
+
+        $retroItem = new RetroItems(
+            $id,
+            $sprintId,
+            $categoria,
+            $descripcion,
+            $cumplida,
+            $fechaRevision
+        );
+        $update = new RetroItemsUpdate();
+        return $update->update($retroItem);
     }
 
-    function insertAccion() {
-        $retroItem = RetroItemsInsert::insertAccion($_POST);
-        return $retroItem;
-    }
+    function deleteRetroItem(array $data) {
+        $id = $data['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
+            return ['success' => false, 'error' => 'ID de retro item inválido.'];
+        }
 
-    function createRetroItem() {
-        $retroItem = RetroItemsInsert::insert($_POST);
-        return $retroItem;
-    }
-
-    function updateRetroItem() {
-        $retroItem = RetroItemsUpdate::update($_POST);
-        return $retroItem;
-    }
-
-    function deleteRetroItem() {
-        $retroItem = RetroItemsDelete::delete($_POST);
-        return $retroItem;
+        $delete = new RetroItemsDelete();
+        return $delete->delete($id);
     }
 }
